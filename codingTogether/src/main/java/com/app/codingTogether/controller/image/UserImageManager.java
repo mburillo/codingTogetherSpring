@@ -12,14 +12,17 @@ public abstract class UserImageManager {
 	public static String saveImage(MultipartFile file) {
 		if(file == null) return null;
 		StringBuilder fileNames = new StringBuilder();
-		Path fileNameAndPath = Path.of(FILE_PATH, System.currentTimeMillis() + ".jpg");
+		String fileName =String.valueOf(System.currentTimeMillis());
+		if(file.getContentType().contains("png")) fileName+= ".png";
+		else if(file.getContentType().contains("jpg")) fileName+=".jpg";
+		Path fileNameAndPath = Path.of(FILE_PATH, fileName);
 		fileNames.append(file.getOriginalFilename());
 		try {
 			Files.write(fileNameAndPath, file.getBytes());
 		} catch (IOException e) {
 			return null;
 		}
-		return fileNameAndPath.toAbsolutePath().toString();
+		return fileName;
 	}
 
 	public static boolean deleteImage(Path pathImageToDelete) {
