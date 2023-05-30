@@ -47,4 +47,10 @@ public class UserService {
 		 List<User> filteredUsers = userRepo.findByFavoriteLanguageLanguageAndFavoriteLanguageExperienceLevel(programmingLanguage, level);
 		    return filteredUsers;
 	}
+	public boolean checkIfFollower(User userToFollow, User follower) {
+		return userRepo.checkIfUserIsFollowingAnother(userToFollow.getId(), follower.getId());
+	}
+	public List<User> getRandomUsers(Long id){
+		return userRepo.findRandomUsersNotFollowed(id, 2);
+	}
 }

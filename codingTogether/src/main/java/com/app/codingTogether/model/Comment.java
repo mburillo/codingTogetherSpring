@@ -1,5 +1,6 @@
 package com.app.codingTogether.model;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -42,6 +43,9 @@ public class Comment {
     @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reply> replies;
 
+    @Column(name="created_at")
+    private LocalDateTime createdAt;
+    
 	public Comment(Long id, User user, String content, List<Like> likes, List<Comment> reposts, Comment parentComment,
 			List<Reply> replies) {
 		super();
@@ -112,6 +116,14 @@ public class Comment {
 
 	public void setReplies(List<Reply> replies) {
 		this.replies = replies;
+	}
+
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
 	}
 
 }

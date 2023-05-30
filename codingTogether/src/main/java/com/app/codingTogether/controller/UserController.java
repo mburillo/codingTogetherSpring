@@ -29,6 +29,7 @@ public class UserController {
 	  @GetMapping("/getById")
 	  public ResponseEntity<User> userById(@RequestParam("userId") Long id) {
 		  User u = userService.getById(id);
+		  
 		  if(u!=null) {
 			  /*u.setFollowers(null);
 			  u.setFollowing(null);*/
@@ -84,18 +85,26 @@ public class UserController {
 		User userBeingFollowed = userService.getById(Long.valueOf(userToFollow));
 		User userFollowing = userService.getById(Long.valueOf(follower));
 		if(userBeingFollowed == null || userFollowing ==null) return ResponseEntity.badRequest().body(false);
-	    if (userBeingFollowed.getFollowers().contains(userFollowing)) {
+		boolean followOrUnfollowed = true;
+		if (userBeingFollowed.getFollowers().contains(userFollowing)) {
 	        userBeingFollowed.getFollowers().remove(userFollowing);
 	        userFollowing.getFollowing().remove(userBeingFollowed);
+	        followOrUnfollowed = false;
 	    } else {
 	        userBeingFollowed.getFollowers().add(userFollowing);
 	        userFollowing.getFollowing().add(userBeingFollowed);
 	    }
 	    userService.saveUser(userBeingFollowed);
 	    userService.saveUser(userFollowing);
-		return ResponseEntity.ok(true);
+		return ResponseEntity.ok(followOrUnfollowed);
 	}
-	
+
+	@PostMapping("/isFollower")
+	public ResponseEntity<Boolean> isFollowingUser(@RequestParam("idPerfil") String userToFollow
+			,@RequestParam("idSeguidor") String follower){
+        return ResponseEntity.ok(userService.checkIfFollower(userService.getById(Long.valueOf(userToFollow))
+        		, userService.getById(Long.valueOf(follower))));
+	}
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<User> deleteUser(@PathVariable Long id) {
 	    User user = userService.getById(id);
@@ -113,4 +122,11 @@ public class UserController {
 		List<User> filteredUsers = userService.filterByLanguageAndLevel(programmingLanguage, level);
 	    return ResponseEntity.ok().body(filteredUsers);
 	}
+	
+	@GetMapping("/randomUsers/{userId}")
+	public ResponseEntity<List<User>> getRandomUsersNotFollowed(@PathVariable("userId") Long userId) {
+	    List<User> randomUsers = userService.getRandomUsers(userId);
+	    return ResponseEntity.ok(randomUsers);
+	}
+	
 }
