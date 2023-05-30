@@ -8,8 +8,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,6 +21,7 @@ import com.app.codingTogether.controller.image.UserImageManager;
 import com.app.codingTogether.controller.password.PasswordEncoder;
 import com.app.codingTogether.model.FavoriteLanguage;
 import com.app.codingTogether.model.User;
+import com.app.codingTogether.model.DTO.UserPatchRequest;
 import com.app.codingTogether.service.UserService;
 
 @RestController
@@ -116,10 +119,20 @@ public class UserController {
 	    userService.deleteUser(user);
 	    return ResponseEntity.ok(user);
 	}
+	
+	@PatchMapping("/update")
+	public ResponseEntity<User> handlePatchRequest(@RequestBody UserPatchRequest userPatchRequest) {
+		System.out.println(userPatchRequest);
+		String imagePath = "";
+		if(userPatchRequest.getImagen()!=null) imagePath = UserImageManager.saveImage(userPatchRequest.getImagen());
+	    return ResponseEntity.ok(userService.updateUser(userPatchRequest, imagePath)); 
+	}
+	
 	@PostMapping("/filter")
 	public ResponseEntity<List<User>> filter(@RequestParam("language") String programmingLanguage,
-			@RequestParam("level") String level) {
-		List<User> filteredUsers = userService.filterByLanguageAndLevel(programmingLanguage, level);
+			@RequestParam("level") String level,
+			@RequestParam("userId") Long userId) {
+		List<User> filteredUsers = userService.filterByLanguageAndLevel(programmingLanguage, level, userId);
 	    return ResponseEntity.ok().body(filteredUsers);
 	}
 	

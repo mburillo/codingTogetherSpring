@@ -27,16 +27,42 @@ public class CommentController {
 	UserService userService;
 	
 	@PostMapping("/savePost")
-	public ResponseEntity<Comment> registerUser(@RequestParam("id") String userId,
+	public ResponseEntity<Comment> savePost(@RequestParam("id") String userId,
             @RequestParam("comentario") String content) {
 		User u = userService.getById(Long.valueOf(userId));
-		Comment c = commentService.savePost(u, content);
-		return ResponseEntity.status(HttpStatus.OK).body(c);
+		return ResponseEntity.status(HttpStatus.OK).body(commentService.savePost(u, content));
 	}
+	
+	@PostMapping("/likePost")
+	public ResponseEntity<Integer> likePost(@RequestParam("idCuenta") Long userId,
+            @RequestParam("idPost") Long idPost) {
+		User u = userService.getById(userId);
+		Comment c = commentService.getById(idPost);		
+		return ResponseEntity.status(HttpStatus.OK).body(commentService.likeComment(u, c));
+	}
+	
+	@PostMapping("/nestPost")
+	public ResponseEntity<Comment> saveNestedPost(
+            @RequestParam("idPost") Long idPost,
+			@RequestParam("idComentador") Long idComentador,
+            @RequestParam("comentario") String content) {
+		User u = userService.getById(idComentador);
+		Comment c = commentService.getById(idPost);
+		return ResponseEntity.status(HttpStatus.OK).body(commentService.saveNestedPost(u, c, content));
+	}
+	
 	@GetMapping("/getFeed/{userId}")
 	public ResponseEntity<List<Comment>> getFeed(@PathVariable("userId") Long userId) {
 		User u = userService.getById(Long.valueOf(userId));
 	    List<Comment> feedPosts = commentService.getAllPosts(u);
 	    return ResponseEntity.ok(feedPosts);
+	}
+	@GetMapping("/getPost/{postId}")
+	public ResponseEntity<Comment> getPost(@PathVariable("postId") Long postId) {
+	    return ResponseEntity.ok(commentService.getById(postId));
+	}
+	@GetMapping("/getPostReplies/{postId}")
+	public ResponseEntity<List<Comment>> getPostReplies(@PathVariable("postId") Long postId) {
+	    return ResponseEntity.ok(commentService.getCommentsByParentId(postId));
 	}
 }
