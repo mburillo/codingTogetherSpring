@@ -1,7 +1,9 @@
 package com.app.codingTogether.repository;
 
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -25,4 +27,12 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	@Query(value = "SELECT * FROM users u WHERE u.id NOT IN (SELECT f.follower_id FROM user_followers f WHERE f.user_id = :userId) AND u.id != :userId ORDER BY RAND() LIMIT :limit", nativeQuery = true)
 	List<User> findRandomUsersNotFollowed(@Param("userId") Long userId, @Param("limit") int limit);
 
+	 @EntityGraph(attributePaths = { "followers", "following" })
+	 Optional<User> findUserWithFollowersAndFollowingById(Long id);
+	
+	 @Query("SELECT u FROM User u LEFT JOIN FETCH u.followers WHERE u.id = :id")
+	    Optional<User> findUserWithFollowersById(@Param("id") Long id);
+
+	    @Query("SELECT u FROM User u LEFT JOIN FETCH u.following WHERE u.id = :id")
+	    Optional<User> findUserWithFollowingById(@Param("id") Long id);
 }

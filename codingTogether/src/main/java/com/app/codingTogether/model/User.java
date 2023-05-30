@@ -5,6 +5,7 @@ import java.util.Set;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
@@ -27,7 +28,7 @@ import jakarta.persistence.OneToOne;
 
 @Entity
 @Table(name = "users")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class User {
 
     @Id
@@ -52,12 +53,20 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "follower_id")
     )
+    @JsonIgnoreProperties("followers")
     private Set<User> followers;
-
+    
     @ManyToMany(mappedBy = "followers", fetch = FetchType.LAZY)
+    @JsonIgnoreProperties("following")
     private Set<User> following;
 
-    
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+        name = "comment_reposts",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "comment_id")
+    )
+    private Set<Comment> repostedComments;
 
 
 public User(Long id, String username, String password, String profileImage,
@@ -134,6 +143,14 @@ public Set<User> getFollowing() {
 
 public void setFollowing(Set<User> following) {
 	this.following = following;
+}
+
+public Set<Comment> getRepostedComments() {
+	return repostedComments;
+}
+
+public void setRepostedComments(Set<Comment> repostedComments) {
+	this.repostedComments = repostedComments;
 }
    
 

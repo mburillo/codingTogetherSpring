@@ -13,10 +13,7 @@ import com.app.codingTogether.model.User;
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long>{
 	
-	@Query("SELECT c FROM Comment c WHERE c.user IN (:followingUsers) AND c.parentComment IS NULL OR c.user = :currentUser  AND c.parentComment IS NULL")
+	@Query("SELECT c FROM Comment c WHERE c.user IN (:followingUsers) OR c.user = :currentUser")
 	List<Comment> getCommentsFromFollowingUsers(@Param("followingUsers") Set<User> followingUsers, @Param("currentUser") User currentUser);
-
-	@Query("SELECT c FROM Comment c WHERE c.parentComment.id = :parentCommentId")
-	List<Comment> findCommentsByParentCommentId(@Param("parentCommentId") Long parentCommentId);
 
 }

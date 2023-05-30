@@ -15,6 +15,7 @@ import com.app.codingTogether.controller.image.UserImageManager;
 import com.app.codingTogether.controller.password.PasswordEncoder;
 import com.app.codingTogether.model.Comment;
 import com.app.codingTogether.model.FavoriteLanguage;
+import com.app.codingTogether.model.Reply;
 import com.app.codingTogether.model.User;
 import com.app.codingTogether.service.CommentService;
 import com.app.codingTogether.service.UserService;
@@ -41,6 +42,14 @@ public class CommentController {
 		return ResponseEntity.status(HttpStatus.OK).body(commentService.likeComment(u, c));
 	}
 	
+	@PostMapping("/repost")
+	public ResponseEntity<Integer> repost(@RequestParam("idCuenta") Long userId,
+            @RequestParam("idPost") Long idPost) {
+		User u = userService.getById(userId);
+		Comment c = commentService.getById(idPost);	
+		return ResponseEntity.status(HttpStatus.OK).body(commentService.repost(u, c));
+	}
+	
 	@PostMapping("/nestPost")
 	public ResponseEntity<Comment> saveNestedPost(
             @RequestParam("idPost") Long idPost,
@@ -60,9 +69,5 @@ public class CommentController {
 	@GetMapping("/getPost/{postId}")
 	public ResponseEntity<Comment> getPost(@PathVariable("postId") Long postId) {
 	    return ResponseEntity.ok(commentService.getById(postId));
-	}
-	@GetMapping("/getPostReplies/{postId}")
-	public ResponseEntity<List<Comment>> getPostReplies(@PathVariable("postId") Long postId) {
-	    return ResponseEntity.ok(commentService.getCommentsByParentId(postId));
 	}
 }

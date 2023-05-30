@@ -2,8 +2,11 @@ package com.app.codingTogether.model;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.CascadeType;
@@ -14,6 +17,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -37,12 +41,12 @@ public class Comment {
     @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Like> likes;
 
-    @OneToMany(mappedBy = "parentComment", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Comment> reposts;
+    @ManyToMany(mappedBy = "repostedComments",fetch = FetchType.EAGER)
+    private Set<User> repostedByUsers = new HashSet<>();;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    /*@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "parent_comment_id")
-    private Comment parentComment;
+    private Comment parentComment;*/
 
     @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reply> replies;
@@ -50,15 +54,13 @@ public class Comment {
     @Column(name="created_at")
     private LocalDateTime createdAt;
     
-	public Comment(Long id, User user, String content, List<Like> likes, List<Comment> reposts, Comment parentComment,
+	public Comment(Long id, User user, String content, List<Like> likes, Comment parentComment,
 			List<Reply> replies) {
 		super();
 		this.id = id;
 		this.user = user;
 		this.content = content;
 		this.likes = likes;
-		this.reposts = reposts;
-		this.parentComment = parentComment;
 		this.replies = replies;
 	}
 
@@ -98,20 +100,13 @@ public class Comment {
 		this.likes = likes;
 	}
 
-	public List<Comment> getReposts() {
-		return reposts;
+
+	public Set<User> getRepostedByUsers() {
+		return repostedByUsers;
 	}
 
-	public void setReposts(List<Comment> reposts) {
-		this.reposts = reposts;
-	}
-
-	public Comment getParentComment() {
-		return parentComment;
-	}
-
-	public void setParentComment(Comment parentComment) {
-		this.parentComment = parentComment;
+	public void setRepostedByUsers(Set<User> repostedByUsers) {
+		this.repostedByUsers = repostedByUsers;
 	}
 
 	public List<Reply> getReplies() {

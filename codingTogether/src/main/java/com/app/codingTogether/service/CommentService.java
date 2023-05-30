@@ -3,12 +3,14 @@ package com.app.codingTogether.service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.app.codingTogether.model.Comment;
 import com.app.codingTogether.model.Like;
+import com.app.codingTogether.model.Reply;
 import com.app.codingTogether.model.User;
 import com.app.codingTogether.repository.CommentRepository;
 
@@ -38,16 +40,16 @@ public class CommentService {
 	}
 
 	public Comment saveNestedPost(User u, Comment c, String content) {
-		Comment nestedC = new Comment();
-		nestedC.setContent(content);
-		nestedC.setCreatedAt(LocalDateTime.now());
-		nestedC.setUser(u);
-		nestedC.setParentComment(c);
-		return commentRepo.save(nestedC);
-	}
-
-	public List<Comment> getCommentsByParentId(Long id) {
-		return commentRepo.findCommentsByParentCommentId(id);
+		Reply reply = new Reply();
+		reply.setContent(content);
+		reply.setCreatedAt(LocalDateTime.now());
+		reply.setUser(u);
+		reply.setComment(c);
+		reply.setUsername(u.getUsername());
+		reply.setImage(u.getProfileImage());
+		List<Reply> commentReplies = c.getReplies();
+		commentReplies.add(reply);		
+		return commentRepo.save(c);
 	}
 
 	public Like searchLike(User u, Comment c) {
@@ -72,6 +74,22 @@ public class CommentService {
 
 		Comment updatedComment = commentRepo.save(c);
 		return updatedComment.getLikes().size();
+	}
+
+	
+	public Integer repost(User u, Comment c) {
+	    Set<User> repostedByUsers = c.getRepostedByUsers();
+
+	    if (repostedByUsers.contains(u)) {
+	        repostedByUsers.remove(u);
+	        u.getRepostedComments().remove(c);
+	    } else {
+	        repostedByUsers.add(u);
+	        u.getRepostedComments().add(c);
+	    }
+
+	    Comment savedComment = commentRepo.save(c);
+	    return savedComment.getRepostedByUsers().size();
 	}
 
 }

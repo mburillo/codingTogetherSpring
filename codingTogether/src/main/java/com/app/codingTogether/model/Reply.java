@@ -1,5 +1,7 @@
 package com.app.codingTogether.model;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -26,9 +28,18 @@ public class Reply {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @Column(name ="username")
+    private String username;
+    
+    @Column(name = "image")
+    private String image;
+    
     @Column(nullable = false)
     private String content;
 
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+    
     public Reply(Long id, Comment comment, User user, String content) {
 		super();
 		this.id = id;
@@ -71,6 +82,30 @@ public class Reply {
 
 	public void setContent(String content) {
 		this.content = content;
+	}
+
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
 	}
 	
 }
