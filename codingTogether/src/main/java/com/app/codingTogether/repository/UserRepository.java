@@ -24,7 +24,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	@Query("SELECT CASE WHEN COUNT(u) > 0 THEN true ELSE false END FROM User u JOIN u.followers f WHERE u.id = :userToFollowId AND f.id = :followerId")
 	boolean checkIfUserIsFollowingAnother(@Param("userToFollowId") Long userToFollowId, @Param("followerId") Long followerId);
 
-	@Query(value = "SELECT * FROM users u WHERE u.id NOT IN (SELECT f.follower_id FROM user_followers f WHERE f.user_id = :userId) AND u.id != :userId ORDER BY RAND() LIMIT :limit", nativeQuery = true)
+	@Query(value = "SELECT * FROM users u WHERE u.id != :userId AND u.id NOT IN (SELECT follower_id FROM user_followers WHERE user_id = :userId) AND u.id NOT IN (SELECT user_id FROM user_followers WHERE follower_id = :userId) ORDER BY RAND() LIMIT :limit", nativeQuery = true)
 	List<User> findRandomUsersNotFollowed(@Param("userId") Long userId, @Param("limit") int limit);
 
 	 @EntityGraph(attributePaths = { "followers", "following" })
