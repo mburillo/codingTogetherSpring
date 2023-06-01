@@ -33,29 +33,12 @@ public class UserService {
 	    Optional<User> optUser = userRepo.findById(id);
 	    if (optUser.isPresent()) {
 	    	User user = optUser.get();
-	       return userToDTO(user);
+	       return DataToDTO.userToDTO(user);
 	    }
 	    return null;
 	}
-	private UserDTO userToDTO(User user) {
-		 UserDTO userDTO = new UserDTO();
-	     userDTO.setId(user.getId());
-	     userDTO.setUsername(user.getUsername());
-	        userDTO.setPassword(user.getPassword());
-	        userDTO.setProfileImage(user.getProfileImage());
-	        userDTO.setFavoriteLanguage((user.getFavoriteLanguage()));
-	        userDTO.setFollowerIds(getUserIds(user.getFollowers()));
-	        userDTO.setFollowingIds(getUserIds(user.getFollowing()));
-	        return userDTO;
-	}
-	
-	private Set<Long> getUserIds(Set<User> users) {
-	    Set<Long> userIds = new HashSet<>();
-	    for (User user : users) {
-	        userIds.add(user.getId());
-	    }
-	    return userIds;
-	}
+
+
 	public User getById(Long id) {
 	Optional<User> u = userRepo.findById(id);
 	if(u.isPresent()) {
@@ -82,7 +65,7 @@ public class UserService {
 		 List<User> filteredUsers = userRepo.findByFavoriteLanguageLanguageAndFavoriteLanguageExperienceLevel(programmingLanguage, level);
 		 List<UserDTO> dtoUsers = new ArrayList<>();
 		 for (User user : filteredUsers) {
-		       dtoUsers.add(userToDTO(user));
+		       dtoUsers.add(DataToDTO.userToDTO(user));
 		    }
 		 return dtoUsers;
 	}
@@ -93,7 +76,7 @@ public class UserService {
 		List<User> randomUsers = userRepo.findRandomUsersNotFollowed(id, 2);
 		List<UserDTO> dtoUsers = new ArrayList<>();
 		for(User u : randomUsers) {
-			dtoUsers.add(userToDTO(u));
+			dtoUsers.add(DataToDTO.userToDTO(u));
 		}
 		return dtoUsers;
 	}
@@ -105,6 +88,6 @@ public class UserService {
 		u.setFavoriteLanguage(userLanguage);
 		if(!imagePath.isBlank() && !imagePath.isEmpty()) u.setProfileImage(imagePath);
 		if(userPatchRequest.getUsuario()!=null) u.setUsername(userPatchRequest.getUsuario());
-		return userToDTO(userRepo.save(u));
+		return DataToDTO.userToDTO(userRepo.save(u));
 	}
 }

@@ -17,6 +17,7 @@ import com.app.codingTogether.model.Comment;
 import com.app.codingTogether.model.FavoriteLanguage;
 import com.app.codingTogether.model.Reply;
 import com.app.codingTogether.model.User;
+import com.app.codingTogether.model.DTO.CommentDTO;
 import com.app.codingTogether.service.CommentService;
 import com.app.codingTogether.service.UserService;
 
@@ -28,7 +29,7 @@ public class CommentController {
 	UserService userService;
 	
 	@PostMapping("/savePost")
-	public ResponseEntity<Comment> savePost(@RequestParam("id") String userId,
+	public ResponseEntity<CommentDTO> savePost(@RequestParam("id") String userId,
             @RequestParam("comentario") String content) {
 		User u = userService.getById(Long.valueOf(userId));
 		return ResponseEntity.status(HttpStatus.OK).body(commentService.savePost(u, content));
@@ -51,7 +52,7 @@ public class CommentController {
 	}
 	
 	@PostMapping("/nestPost")
-	public ResponseEntity<Comment> saveNestedPost(
+	public ResponseEntity<CommentDTO> saveNestedPost(
             @RequestParam("idPost") Long idPost,
 			@RequestParam("idComentador") Long idComentador,
             @RequestParam("comentario") String content) {
@@ -61,13 +62,13 @@ public class CommentController {
 	}
 	
 	@GetMapping("/getFeed/{userId}")
-	public ResponseEntity<List<Comment>> getFeed(@PathVariable("userId") Long userId) {
+	public ResponseEntity<List<CommentDTO>> getFeed(@PathVariable("userId") Long userId) {
 		User u = userService.getById(Long.valueOf(userId));
-	    List<Comment> feedPosts = commentService.getAllPosts(u);
+	    List<CommentDTO> feedPosts = commentService.getAllPosts(u);
 	    return ResponseEntity.ok(feedPosts);
 	}
 	@GetMapping("/getPost/{postId}")
-	public ResponseEntity<Comment> getPost(@PathVariable("postId") Long postId) {
-	    return ResponseEntity.ok(commentService.getById(postId));
+	public ResponseEntity<CommentDTO> getPost(@PathVariable("postId") Long postId) {
+	    return ResponseEntity.ok(commentService.getDTOById(postId));
 	}
 }

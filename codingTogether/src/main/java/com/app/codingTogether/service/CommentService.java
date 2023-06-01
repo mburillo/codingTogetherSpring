@@ -2,16 +2,20 @@ package com.app.codingTogether.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.app.codingTogether.model.DTO.UserDTO;
 import com.app.codingTogether.model.Comment;
 import com.app.codingTogether.model.Like;
 import com.app.codingTogether.model.Reply;
 import com.app.codingTogether.model.User;
+import com.app.codingTogether.model.DTO.CommentDTO;
 import com.app.codingTogether.repository.CommentRepository;
 
 @Service
@@ -19,6 +23,13 @@ public class CommentService {
 	@Autowired
 	CommentRepository commentRepo;
 
+	public CommentDTO getDTOById(Long id) {
+		Optional<Comment> comment = commentRepo.findById(id);
+		if (comment.isPresent()) {
+			return DataToDTO.commentToDTO(comment.get());
+		}
+		return null;
+	}
 	public Comment getById(Long id) {
 		Optional<Comment> comment = commentRepo.findById(id);
 		if (comment.isPresent()) {
@@ -27,19 +38,25 @@ public class CommentService {
 		return null;
 	}
 
-	public Comment savePost(User u, String content) {
+	public CommentDTO savePost(User u, String content) {
 		Comment c = new Comment();
 		c.setContent(content);
 		c.setCreatedAt(LocalDateTime.now());
 		c.setUser(u);
-		return commentRepo.save(c);
+		return DataToDTO.commentToDTO(commentRepo.save(c));
 	}
 
-	public List<Comment> getAllPosts(User u) {
-		return commentRepo.getCommentsFromFollowingUsers(u.getFollowing(), u);
+	public List<CommentDTO> getAllPosts(User u) {
+	    List<Comment> allPosts = commentRepo.getCommentsFromFollowingUsers(u);
+	    List<CommentDTO> commentDTOs = new ArrayList<>();
+	    for (Comment comment : allPosts) {
+	        commentDTOs.add(DataToDTO.commentToDTO(comment));
+	    }
+	    return commentDTOs;
 	}
 
-	public Comment saveNestedPost(User u, Comment c, String content) {
+
+	public CommentDTO saveNestedPost(User u, Comment c, String content) {
 		Reply reply = new Reply();
 		reply.setContent(content);
 		reply.setCreatedAt(LocalDateTime.now());
@@ -49,7 +66,7 @@ public class CommentService {
 		reply.setImage(u.getProfileImage());
 		List<Reply> commentReplies = c.getReplies();
 		commentReplies.add(reply);		
-		return commentRepo.save(c);
+		return DataToDTO.commentToDTO(commentRepo.save(c));
 	}
 
 	public Like searchLike(User u, Comment c) {

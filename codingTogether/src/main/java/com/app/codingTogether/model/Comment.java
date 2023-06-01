@@ -44,11 +44,7 @@ public class Comment {
     @ManyToMany(mappedBy = "repostedComments",fetch = FetchType.EAGER)
     private Set<User> repostedByUsers = new HashSet<>();;
 
-    /*@ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "parent_comment_id")
-    private Comment parentComment;*/
-
-    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Reply> replies;
 
     @Column(name="created_at")
