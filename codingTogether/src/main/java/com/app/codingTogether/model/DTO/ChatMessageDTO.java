@@ -1,9 +1,6 @@
-package com.app.codingTogether.chat;
+package com.app.codingTogether.model.DTO;
 
 import java.util.Date;
-
-
-import com.app.codingTogether.model.DTO.UserDTO;
 
 
 public class ChatMessageDTO {

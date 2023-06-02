@@ -1,8 +1,6 @@
-package com.app.codingTogether.chat;
+package com.app.codingTogether.model;
 
 import java.util.Date;
-
-import com.app.codingTogether.model.User;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

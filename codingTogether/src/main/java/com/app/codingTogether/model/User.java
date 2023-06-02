@@ -47,7 +47,7 @@ public class User {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "favorite_language_id")
     private FavoriteLanguage favoriteLanguage;
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_followers",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -56,7 +56,7 @@ public class User {
     @JsonIgnoreProperties("followers")
     private Set<User> followers;
     
-    @ManyToMany(mappedBy = "followers", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "followers", fetch = FetchType.EAGER)
     @JsonIgnoreProperties("following")
     private Set<User> following;
 

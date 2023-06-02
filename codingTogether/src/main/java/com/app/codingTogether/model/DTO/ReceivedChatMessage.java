@@ -1,4 +1,4 @@
-package com.app.codingTogether.chat;
+package com.app.codingTogether.model.DTO;
 
 public class ReceivedChatMessage {
 	private Long id;

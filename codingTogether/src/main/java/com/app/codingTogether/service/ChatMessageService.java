@@ -1,4 +1,4 @@
-package com.app.codingTogether.chat;
+package com.app.codingTogether.service;
 
 
 import java.util.Date;
@@ -6,8 +6,10 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.app.codingTogether.model.ChatMessage;
 import com.app.codingTogether.model.User;
-import com.app.codingTogether.service.DataToDTO;
+import com.app.codingTogether.model.DTO.ChatMessageDTO;
+import com.app.codingTogether.repository.ChatMessageRepository;
 
 @Service
 public class ChatMessageService {

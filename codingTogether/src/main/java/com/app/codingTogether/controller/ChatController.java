@@ -1,4 +1,4 @@
-package com.app.codingTogether.chat;
+package com.app.codingTogether.controller;
 
 import java.util.Date;
 
@@ -9,6 +9,9 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 
 import com.app.codingTogether.model.User;
+import com.app.codingTogether.model.DTO.ChatMessageDTO;
+import com.app.codingTogether.model.DTO.ReceivedChatMessage;
+import com.app.codingTogether.service.ChatMessageService;
 import com.app.codingTogether.service.UserService;
 
 @Controller
