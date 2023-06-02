@@ -1,12 +1,15 @@
 package com.app.codingTogether.controller;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import com.app.codingTogether.model.User;
 import com.app.codingTogether.model.DTO.ChatMessageDTO;
@@ -26,7 +29,10 @@ public class ChatController {
 public ChatMessageDTO sendMessage(@Payload ReceivedChatMessage chatMessage) {
 	User u = userService.getById(chatMessage.getId());
 	ChatMessageDTO storedMessage=messageService.saveChatMessage(u, chatMessage.getContent());
-	System.out.println("paso aunque sea "+chatMessage.getContent()+" "+chatMessage.getId());
 	return storedMessage;
+}
+@GetMapping("/getChatMessages")
+public ResponseEntity<List<ChatMessageDTO>> getLatestMessages() {
+	return ResponseEntity.ok(messageService.getLatestMessages());
 }
 }
