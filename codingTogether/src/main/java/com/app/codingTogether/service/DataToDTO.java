@@ -6,10 +6,12 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.ArrayList;
 
+import com.app.codingTogether.model.ChatMessage;
 import com.app.codingTogether.model.Comment;
 import com.app.codingTogether.model.Like;
 import com.app.codingTogether.model.Reply;
 import com.app.codingTogether.model.User;
+import com.app.codingTogether.model.DTO.ChatMessageDTO;
 import com.app.codingTogether.model.DTO.CommentDTO;
 import com.app.codingTogether.model.DTO.ReplyDTO;
 import com.app.codingTogether.model.DTO.UserDTO;
@@ -61,4 +63,15 @@ public class DataToDTO {
 	        reply.getCreatedAt()
 	    );
 	}
+	
+	 public static ChatMessageDTO fromChatMessage(ChatMessage chatMessage) {
+	        UserDTO senderDTO = userToDTO(chatMessage.getSender());
+	        return new ChatMessageDTO(
+	                chatMessage.getId(),
+	                chatMessage.getContent(),
+	                chatMessage.getTimestamp(),
+	                senderDTO
+	        );
+	    }
+	
 }

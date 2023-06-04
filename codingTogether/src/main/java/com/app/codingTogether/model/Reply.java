@@ -19,31 +19,31 @@ import jakarta.persistence.Table;
 
 public class Reply {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "comment_id", nullable = false)
-    private Comment comment;
-    
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "comment_id", nullable = false)
+	private Comment comment;
 
-    @Column(name ="username")
-    private String username;
-    
-    @Column(name = "image")
-    private String image;
-    
-    @Column(nullable = false)
-    private String content;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id", nullable = false)
+	private User user;
 
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-    
-    public Reply(Long id, Comment comment, User user, String content) {
+	@Column(name = "username")
+	private String username;
+
+	@Column(name = "image")
+	private String image;
+
+	@Column(nullable = false)
+	private String content;
+
+	@Column(name = "created_at")
+	private LocalDateTime createdAt;
+
+	public Reply(Long id, Comment comment, User user, String content) {
 		super();
 		this.id = id;
 		this.comment = comment;
@@ -52,8 +52,8 @@ public class Reply {
 	}
 
 	public Reply() {
-    	
-    }
+
+	}
 
 	public Long getId() {
 		return id;
@@ -110,5 +110,5 @@ public class Reply {
 	public void setImage(String image) {
 		this.image = image;
 	}
-	
+
 }

@@ -80,14 +80,16 @@ public class UserService {
 		}
 		return dtoUsers;
 	}
-	public UserDTO updateUser(UserPatchRequest userPatchRequest, String imagePath) {
-		User u = getById(userPatchRequest.getId());
-		FavoriteLanguage userLanguage= new FavoriteLanguage();
-		userLanguage.setExperienceLevel(userPatchRequest.getNivel());
-		userLanguage.setLanguage(userPatchRequest.getLenguaje());
-		u.setFavoriteLanguage(userLanguage);
-		if(!imagePath.isBlank() && !imagePath.isEmpty()) u.setProfileImage(imagePath);
-		if(userPatchRequest.getUsuario()!=null) u.setUsername(userPatchRequest.getUsuario());
-		return DataToDTO.userToDTO(userRepo.save(u));
+	public UserDTO updateUser(Long id, String language, String level, String imagePath) {
+	    User u = getById(id);
+	    FavoriteLanguage userLanguage = u.getFavoriteLanguage();
+	    userLanguage.setExperienceLevel(level);
+	    userLanguage.setLanguage(language);
+	    u.setFavoriteLanguage(userLanguage);
+	    if (!imagePath.isBlank() && !imagePath.isEmpty()) {
+	        u.setProfileImage(imagePath);
+	    }
+	    return DataToDTO.userToDTO(userRepo.save(u));
 	}
+
 }

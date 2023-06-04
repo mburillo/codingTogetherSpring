@@ -24,19 +24,19 @@ import javax.persistence.Table;*/
 @Table(name = "likes")
 public class Like {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "comment_id", nullable = false)
-    private Comment comment;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "comment_id", nullable = false)
+	private Comment comment;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "user_id", nullable = false)
+	private User user;
 
-    public Like(Long id, Comment comment, User user) {
+	public Like(Long id, Comment comment, User user) {
 		super();
 		this.id = id;
 		this.comment = comment;
@@ -44,8 +44,8 @@ public class Like {
 	}
 
 	public Like() {
-    	
-    }
+
+	}
 
 	public Long getId() {
 		return id;
@@ -88,5 +88,5 @@ public class Like {
 		return Objects.equals(comment, other.comment) && Objects.equals(id, other.id)
 				&& Objects.equals(user, other.user);
 	}
-	
+
 }
