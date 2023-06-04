@@ -3,8 +3,6 @@ package com.app.codingTogether.model.DTO;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.app.codingTogether.model.Reply;
-
 public class CommentDTO {
 	private Long id;
 	private UserDTO user;

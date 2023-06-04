@@ -1,11 +1,8 @@
 package com.app.codingTogether.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.HashSet;
-import java.util.ArrayList;
-
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,7 +10,6 @@ import org.springframework.stereotype.Service;
 import com.app.codingTogether.model.FavoriteLanguage;
 import com.app.codingTogether.model.User;
 import com.app.codingTogether.model.DTO.UserDTO;
-import com.app.codingTogether.model.DTO.UserPatchRequest;
 import com.app.codingTogether.repository.UserRepository;
 
 @Service
