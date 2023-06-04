@@ -11,46 +11,46 @@ import jakarta.persistence.Table;
 @Table(name = "favorite_languages")
 public class FavoriteLanguage {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @Column(nullable = false)
-    private String language;
+	@Column(nullable = false)
+	private String language;
 
-    @Column(nullable = false)
-    private String experienceLevel;
+	@Column(nullable = false)
+	private String experienceLevel;
 
-    public FavoriteLanguage(Long id, String language, String experienceLevel) {
-        this.id = id;
-        this.language = language;
-        this.experienceLevel = experienceLevel;
-    }
+	public FavoriteLanguage(Long id, String language, String experienceLevel) {
+		this.id = id;
+		this.language = language;
+		this.experienceLevel = experienceLevel;
+	}
 
-    public FavoriteLanguage() {
-    }
+	public FavoriteLanguage() {
+	}
 
-    public Long getId() {
-        return id;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public String getLanguage() {
-        return language;
-    }
+	public String getLanguage() {
+		return language;
+	}
 
-    public void setLanguage(String language) {
-        this.language = language;
-    }
+	public void setLanguage(String language) {
+		this.language = language;
+	}
 
-    public String getExperienceLevel() {
-        return experienceLevel;
-    }
+	public String getExperienceLevel() {
+		return experienceLevel;
+	}
 
-    public void setExperienceLevel(String experienceLevel) {
-        this.experienceLevel = experienceLevel;
-    }
+	public void setExperienceLevel(String experienceLevel) {
+		this.experienceLevel = experienceLevel;
+	}
 }

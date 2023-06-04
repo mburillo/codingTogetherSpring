@@ -4,10 +4,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class UserPatchRequest {
     private Long id;
-    private String usuario;
-    private String lenguaje;
-    private String nivel;
-    private MultipartFile imagen;
+    private String username;
+    private String language;
+    private String level;
+    private MultipartFile image;
     public UserPatchRequest() {
     	
     }
@@ -15,10 +15,10 @@ public class UserPatchRequest {
 	public UserPatchRequest(Long id, String usuario, String lenguaje, String nivel, MultipartFile imagen) {
 		super();
 		this.id = id;
-		this.usuario = usuario;
-		this.lenguaje = lenguaje;
-		this.nivel = nivel;
-		this.imagen = imagen;
+		this.username = usuario;
+		this.language = lenguaje;
+		this.level = nivel;
+		this.image = imagen;
 	}
 
 	public Long getId() {
@@ -27,35 +27,44 @@ public class UserPatchRequest {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public String getUsuario() {
-		return usuario;
+	
+
+	public String getUsername() {
+		return username;
 	}
-	public void setUsuario(String usuario) {
-		this.usuario = usuario;
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
-	public String getLenguaje() {
-		return lenguaje;
+
+	public String getLanguage() {
+		return language;
 	}
-	public void setLenguaje(String lenguaje) {
-		this.lenguaje = lenguaje;
+
+	public void setLanguage(String language) {
+		this.language = language;
 	}
-	public String getNivel() {
-		return nivel;
+
+	public String getLevel() {
+		return level;
 	}
-	public void setNivel(String nivel) {
-		this.nivel = nivel;
+
+	public void setLevel(String level) {
+		this.level = level;
 	}
-	public MultipartFile getImagen() {
-		return imagen;
+
+	public MultipartFile getImage() {
+		return image;
 	}
-	public void setImagen(MultipartFile imagen) {
-		this.imagen = imagen;
+
+	public void setImage(MultipartFile image) {
+		this.image = image;
 	}
 
 	@Override
 	public String toString() {
-		return "UserPatchRequest [id=" + id + ", usuario=" + usuario + ", lenguaje=" + lenguaje + ", nivel=" + nivel
-				+ ", imagen=" + imagen + "]";
+		return "UserPatchRequest [id=" + id + ", usuario=" + username + ", lenguaje=" + language + ", nivel=" + level
+				+ ", imagen=" + image + "]";
 	}
 
 }

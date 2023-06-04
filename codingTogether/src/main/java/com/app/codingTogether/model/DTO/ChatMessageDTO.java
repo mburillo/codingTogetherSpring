@@ -2,12 +2,14 @@ package com.app.codingTogether.model.DTO;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 
 public class ChatMessageDTO {
 	 private Long id;
 	    
 	    private String content;
-	    
+	    @JsonFormat(pattern = "HH:mm", timezone = "GMT")
 	    private Date timestamp;
 	    
 	    private UserDTO sender;

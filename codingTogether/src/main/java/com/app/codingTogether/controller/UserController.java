@@ -21,6 +21,7 @@ import com.app.codingTogether.controller.image.UserImageManager;
 import com.app.codingTogether.controller.password.PasswordEncoder;
 import com.app.codingTogether.model.FavoriteLanguage;
 import com.app.codingTogether.model.User;
+import com.app.codingTogether.model.DTO.RegisterRequest;
 import com.app.codingTogether.model.DTO.UserDTO;
 import com.app.codingTogether.model.DTO.UserPatchRequest;
 import com.app.codingTogether.service.UserService;
@@ -34,9 +35,6 @@ public class UserController {
 	public ResponseEntity<UserDTO> userById(@RequestParam("userId") Long id) {
 		UserDTO u = userService.getUserDTOById(id);
 		if (u != null) {
-			/*
-			 * u.setFollowers(null); u.setFollowing(null);
-			 */
 			return ResponseEntity.ok().body(u);
 		}
 		return ResponseEntity.badRequest().body(null);
@@ -59,23 +57,26 @@ public class UserController {
 	}
 
 	@PostMapping("/register")
-	public ResponseEntity<User> registerUser(@RequestParam("usuario") String username,
-			@RequestParam("clave") String password, @RequestParam("lenguaje") String language,
-			@RequestParam("nivel") String level, @RequestParam("imagen") MultipartFile image) {
-		String imagePath = "img.png";
-		if (image != null)
-			imagePath = UserImageManager.saveImage(image);
-		FavoriteLanguage userLanguage = new FavoriteLanguage();
-		userLanguage.setExperienceLevel(level);
-		userLanguage.setLanguage(language);
-		User userToSave = new User();
-		userToSave.setUsername(username);
-		userToSave.setPassword(PasswordEncoder.hashPassword(password));
-		userToSave.setProfileImage(imagePath);
-		userToSave.setFavoriteLanguage(userLanguage);
-		User savedUser = userService.saveUser(userToSave);
-		if (savedUser != null) {
-			return ResponseEntity.status(HttpStatus.OK).body(savedUser);
+	public ResponseEntity<User> registerUser(@RequestParam("username") String username,
+			@RequestParam("password") String password, @RequestParam("language") String language,
+			@RequestParam("level") String level, @RequestParam(value = "image", required = false) MultipartFile image) {
+		if (!username.isBlank() && !username.isBlank() && !password.isBlank() && !password.isEmpty()) {
+			String imagePath = "img.png";
+			if (image != null) {
+				imagePath = UserImageManager.saveImage(image);
+			}
+			FavoriteLanguage userLanguage = new FavoriteLanguage();
+			userLanguage.setExperienceLevel(level);
+			userLanguage.setLanguage(language);
+			User userToSave = new User();
+			userToSave.setUsername(username);
+			userToSave.setPassword(PasswordEncoder.hashPassword(password));
+			userToSave.setProfileImage(imagePath);
+			userToSave.setFavoriteLanguage(userLanguage);
+			User savedUser = userService.saveUser(userToSave);
+			if (savedUser != null) {
+				return ResponseEntity.status(HttpStatus.OK).body(savedUser);
+			}
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(null);
 	}
@@ -122,12 +123,13 @@ public class UserController {
 	}
 
 	@PatchMapping("/update")
-	public ResponseEntity<UserDTO> handlePatchRequest(@RequestBody UserPatchRequest userPatchRequest) {
-		System.out.println(userPatchRequest);
+	public ResponseEntity<UserDTO> handlePatchRequest(@RequestParam("id") Long id,
+			@RequestParam("language") String language, @RequestParam("level") String level,
+			@RequestParam(value = "image", required = false) MultipartFile image) {
 		String imagePath = "";
-		if (userPatchRequest.getImagen() != null)
-			imagePath = UserImageManager.saveImage(userPatchRequest.getImagen());
-		return ResponseEntity.ok(userService.updateUser(userPatchRequest, imagePath));
+		if (image != null)
+			imagePath = UserImageManager.saveImage(image);
+		return ResponseEntity.ok(userService.updateUser(id, language, level, imagePath));
 	}
 
 	@PostMapping("/filter")

@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import com.app.codingTogether.model.ChatMessage;
 
 @Repository
-public interface ChatMessageRepository extends JpaRepository<ChatMessage, Long>{
+public interface ChatMessageRepository extends JpaRepository<ChatMessage, Long> {
 	List<ChatMessage> findTop25ByOrderByTimestampDesc();
 }

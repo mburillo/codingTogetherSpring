@@ -10,11 +10,14 @@ public abstract class UserImageManager {
 	private static final String FILE_PATH = "src/main/resources/images/";
 
 	public static String saveImage(MultipartFile file) {
-		if(file == null) return null;
+		if (file == null)
+			return null;
 		StringBuilder fileNames = new StringBuilder();
-		String fileName =String.valueOf(System.currentTimeMillis());
-		if(file.getContentType().contains("png")) fileName+= ".png";
-		else if(file.getContentType().contains("jpg")) fileName+=".jpg";
+		String fileName = String.valueOf(System.currentTimeMillis());
+		if (file.getContentType().contains("png"))
+			fileName += ".png";
+		else if (file.getContentType().contains("jpg"))
+			fileName += ".jpg";
 		Path fileNameAndPath = Path.of(FILE_PATH, fileName);
 		fileNames.append(file.getOriginalFilename());
 		try {
@@ -36,4 +39,3 @@ public abstract class UserImageManager {
 	}
 
 }
-

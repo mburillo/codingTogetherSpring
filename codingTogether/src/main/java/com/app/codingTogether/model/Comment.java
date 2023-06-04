@@ -27,31 +27,30 @@ import jakarta.persistence.Table;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Comment {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "user_id", nullable = false)
+	private User user;
 
-    @Column(nullable = false)
-    private String content;
+	@Column(nullable = false)
+	private String content;
 
-    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Like> likes;
+	@OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Like> likes;
 
-    @ManyToMany(mappedBy = "repostedComments",fetch = FetchType.EAGER)
-    private Set<User> repostedByUsers = new HashSet<>();;
+	@ManyToMany(mappedBy = "repostedComments", fetch = FetchType.EAGER)
+	private Set<User> repostedByUsers = new HashSet<>();;
 
-    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<Reply> replies;
+	@OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	private List<Reply> replies;
 
-    @Column(name="created_at")
-    private LocalDateTime createdAt;
-    
-	public Comment(Long id, User user, String content, List<Like> likes, Comment parentComment,
-			List<Reply> replies) {
+	@Column(name = "created_at")
+	private LocalDateTime createdAt;
+
+	public Comment(Long id, User user, String content, List<Like> likes, Comment parentComment, List<Reply> replies) {
 		super();
 		this.id = id;
 		this.user = user;
@@ -60,9 +59,9 @@ public class Comment {
 		this.replies = replies;
 	}
 
-    public Comment() {
-    	
-    }
+	public Comment() {
+
+	}
 
 	public Long getId() {
 		return id;
@@ -95,7 +94,6 @@ public class Comment {
 	public void setLikes(List<Like> likes) {
 		this.likes = likes;
 	}
-
 
 	public Set<User> getRepostedByUsers() {
 		return repostedByUsers;

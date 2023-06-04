@@ -6,14 +6,13 @@ import java.util.List;
 import com.app.codingTogether.model.Reply;
 
 public class CommentDTO {
-    private Long id;
-    private UserDTO user;
-    private String content;
-    private List<Long> likeIds;
-    private List<UserDTO> repostedByUsers;
-    private List<ReplyDTO> replies;
-    private LocalDateTime createdAt;
-
+	private Long id;
+	private UserDTO user;
+	private String content;
+	private List<Long> likeIds;
+	private List<UserDTO> repostedByUsers;
+	private List<ReplyDTO> replies;
+	private LocalDateTime createdAt;
 
 	public CommentDTO(Long id, UserDTO user, String content, List<Long> likeIds, List<UserDTO> repostedByUserIds,
 			List<ReplyDTO> replies, LocalDateTime createdAt) {
@@ -67,7 +66,6 @@ public class CommentDTO {
 		this.repostedByUsers = repostedByUsers;
 	}
 
-
 	public List<ReplyDTO> getReplyIds() {
 		return replies;
 	}
@@ -84,7 +82,4 @@ public class CommentDTO {
 		this.createdAt = createdAt;
 	}
 
-
-    
 }
-

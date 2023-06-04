@@ -11,24 +11,24 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="chat_messages")
+@Table(name = "chat_messages")
 public class ChatMessage {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    
-    private String content;
-    
-    private Date timestamp;
-    
-    @ManyToOne(fetch = FetchType.EAGER)
-    private User sender;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    public ChatMessage() {
-    	
-    }
-    
+	private String content;
+
+	private Date timestamp;
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	private User sender;
+
+	public ChatMessage() {
+
+	}
+
 	public ChatMessage(Long id, String content, Date timestamp, User sender) {
 		super();
 		this.id = id;
@@ -68,5 +68,5 @@ public class ChatMessage {
 	public void setSender(User sender) {
 		this.sender = sender;
 	}
-    
+
 }

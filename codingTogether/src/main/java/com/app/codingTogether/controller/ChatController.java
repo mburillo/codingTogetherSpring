@@ -1,7 +1,9 @@
 package com.app.codingTogether.controller;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,20 +21,25 @@ import com.app.codingTogether.service.UserService;
 
 @Controller
 public class ChatController {
-	
+
 	@Autowired
 	UserService userService;
-	@Autowired 
+	@Autowired
 	ChatMessageService messageService;
-@MessageMapping("/chat")
-@SendTo("/topic/messages")
-public ChatMessageDTO sendMessage(@Payload ReceivedChatMessage chatMessage) {
-	User u = userService.getById(chatMessage.getId());
-	ChatMessageDTO storedMessage=messageService.saveChatMessage(u, chatMessage.getContent());
-	return storedMessage;
-}
-@GetMapping("/getChatMessages")
-public ResponseEntity<List<ChatMessageDTO>> getLatestMessages() {
-	return ResponseEntity.ok(messageService.getLatestMessages());
-}
+
+	@MessageMapping("/chat")
+	@SendTo("/topic/messages")
+	public ChatMessageDTO sendMessage(@Payload ReceivedChatMessage chatMessage) {
+		User u = userService.getById(chatMessage.getId());
+		ChatMessageDTO storedMessage = messageService.saveChatMessage(u, chatMessage.getContent());
+		return storedMessage;
+	}
+
+	@GetMapping("/getChatMessages")
+	public ResponseEntity<List<ChatMessageDTO>> getLatestMessages() {
+		List<ChatMessageDTO> messages = messageService.getLatestMessages();
+		Collections.reverse(messages);
+		return ResponseEntity.ok(messages);
+	}
+
 }
