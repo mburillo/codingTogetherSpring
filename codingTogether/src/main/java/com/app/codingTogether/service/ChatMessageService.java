@@ -33,4 +33,14 @@ public List<ChatMessageDTO> getLatestMessages() {
 	return latestMessagesDTO;
 }
 
+public List<ChatMessage> getChatMessagesByUser(User user) {
+	return messageRepository.findBySender(user);
+}
+
+public void deleteAll(List<ChatMessage> messagesToDelete) {
+	messageRepository.deleteAll(messagesToDelete);
+
+	
+}
+
 }

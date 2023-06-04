@@ -19,8 +19,8 @@ public class UserService {
 	public List<User> allUsers() {
 		return userRepo.findAll();
 	}
-	public User getLoginUser(String username, String password) {
-		return userRepo.findByUsernameAndPassword(username, password);
+	public UserDTO getLoginUser(String username, String password) {
+		return DataToDTO.userToDTO(userRepo.findByUsernameAndPassword(username, password));
 	}
 	public User saveUser(User u) {
 		return userRepo.save(u);

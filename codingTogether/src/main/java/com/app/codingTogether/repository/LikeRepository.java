@@ -7,13 +7,16 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.app.codingTogether.model.ChatMessage;
 import com.app.codingTogether.model.Like;
 import com.app.codingTogether.model.User;
 
+import jakarta.transaction.Transactional;
+
 @Repository
-public interface ChatMessageRepository extends JpaRepository<ChatMessage, Long> {
-	List<ChatMessage> findTop25ByOrderByTimestampDesc();
-	
-	  List<ChatMessage> findBySender(User sender);
+@Transactional
+public interface LikeRepository extends JpaRepository<Like, Long> {
+
+    void deleteByUser(User user);
+    @Query("SELECT l FROM Like l WHERE l.user = :user")
+    List<Like> findByUser(@Param("user") User user);
 }

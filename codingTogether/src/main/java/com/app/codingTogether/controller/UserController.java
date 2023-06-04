@@ -1,6 +1,7 @@
 package com.app.codingTogether.controller;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,16 +17,34 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.app.codingTogether.controller.image.UserImageManager;
 import com.app.codingTogether.controller.password.PasswordEncoder;
+import com.app.codingTogether.model.ChatMessage;
+import com.app.codingTogether.model.Comment;
 import com.app.codingTogether.model.FavoriteLanguage;
+import com.app.codingTogether.model.Like;
+import com.app.codingTogether.model.Reply;
 import com.app.codingTogether.model.User;
 import com.app.codingTogether.model.DTO.UserDTO;
+import com.app.codingTogether.repository.CommentRepository;
+import com.app.codingTogether.service.ChatMessageService;
+import com.app.codingTogether.service.CommentService;
+import com.app.codingTogether.service.LikeService;
+import com.app.codingTogether.service.ReplyService;
 import com.app.codingTogether.service.UserService;
 
 @RestController
 public class UserController {
+
 	@Autowired
 	UserService userService;
-
+	@Autowired
+	CommentService commentService;
+	@Autowired
+	LikeService likeService;
+	@Autowired
+	ChatMessageService chatService;
+	@Autowired
+	ReplyService replyService;
+	
 	@GetMapping("/getById")
 	public ResponseEntity<UserDTO> userById(@RequestParam("userId") Long id) {
 		UserDTO u = userService.getUserDTOById(id);
@@ -41,9 +60,9 @@ public class UserController {
 	}
 
 	@PostMapping("/login")
-	public ResponseEntity<User> loginUser(@RequestParam("username") String username,
+	public ResponseEntity<UserDTO> loginUser(@RequestParam("username") String username,
 			@RequestParam("password") String password) {
-		User userToLogin = userService.getLoginUser(username, PasswordEncoder.hashPassword(password));
+		UserDTO userToLogin = userService.getLoginUser(username, PasswordEncoder.hashPassword(password));
 		System.out.println(userToLogin);
 		if (userToLogin != null) {
 			return ResponseEntity.status(HttpStatus.OK).body(userToLogin);
@@ -111,8 +130,30 @@ public class UserController {
 		if (user == null) {
 			return ResponseEntity.notFound().build();
 		}
-		user.setFollowers(null);
-		user.setFollowing(null);
+		Set<User> followers = user.getFollowers();
+		Set<User> following = user.getFollowing();
+		for (User follower : followers) {
+			follower.getFollowing().remove(user);
+		}
+		for (User followed : following) {
+			followed.getFollowers().remove(user);
+		}
+		List<Like> userLikes = likeService.getLikesByUser(user);
+		for (Like like : userLikes) {
+			Comment comment = like.getComment();
+			comment.getLikes().remove(like);
+			likeService.deleteLike(like);
+		}
+		List<Reply> userReplies = replyService.getRepliesByUser(user);
+		for (Reply reply : userReplies) {
+			Comment comment = reply.getComment();
+			comment.getReplies().remove(reply);
+			replyService.deleteReply(reply);
+		}
+		List<ChatMessage> userMessages = chatService.getChatMessagesByUser(user);
+		chatService.deleteAll(userMessages);
+		user.setRepostedComments(null);
+		commentService.deleteByUser(user);
 		userService.deleteUser(user);
 		return ResponseEntity.ok(user);
 	}

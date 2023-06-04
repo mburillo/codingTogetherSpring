@@ -106,5 +106,8 @@ public class CommentService {
 	    Comment savedComment = commentRepo.save(c);
 	    return savedComment.getRepostedByUsers().size();
 	}
+	public void deleteByUser(User user) {
+		commentRepo.deleteByUser(user);		
+	}
 
 }
