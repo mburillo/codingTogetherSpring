@@ -25,14 +25,7 @@ public class ChatController {
 	@Autowired
 	ChatMessageService messageService;
 
-	@MessageMapping("/chat")
-	@SendTo("/topic/messages")
-	public ChatMessageDTO sendMessage(@Payload ReceivedChatMessage chatMessage) {
-		User u = userService.getById(chatMessage.getId());
-		ChatMessageDTO storedMessage = messageService.saveChatMessage(u, chatMessage.getContent());
-		return storedMessage;
-	}
-
+	
 	@GetMapping("/getChatMessages")
 	public ResponseEntity<List<ChatMessageDTO>> getLatestMessages() {
 		List<ChatMessageDTO> messages = messageService.getLatestMessages();
@@ -40,4 +33,12 @@ public class ChatController {
 		return ResponseEntity.ok(messages);
 	}
 
+	
+	@MessageMapping("/chat")
+	@SendTo("/topic/messages")
+	public ChatMessageDTO sendMessage(@Payload ReceivedChatMessage chatMessage) {
+		User u = userService.getById(chatMessage.getId());
+		ChatMessageDTO storedMessage = messageService.saveChatMessage(u, chatMessage.getContent());
+		return storedMessage;
+	}
 }

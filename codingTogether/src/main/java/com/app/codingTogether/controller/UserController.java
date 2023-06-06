@@ -125,7 +125,7 @@ public class UserController {
 	}
 
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<User> deleteUser(@PathVariable Long id) {
+	public ResponseEntity<Boolean> deleteUser(@PathVariable Long id) {
 		User user = userService.getById(id);
 		if (user == null) {
 			return ResponseEntity.notFound().build();
@@ -155,7 +155,7 @@ public class UserController {
 		user.setRepostedComments(null);
 		commentService.deleteByUser(user);
 		userService.deleteUser(user);
-		return ResponseEntity.ok(user);
+		return ResponseEntity.ok(true);
 	}
 
 	@PatchMapping("/update")

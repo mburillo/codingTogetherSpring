@@ -14,6 +14,7 @@ import com.app.codingTogether.model.Like;
 import com.app.codingTogether.model.Reply;
 import com.app.codingTogether.model.User;
 import com.app.codingTogether.model.DTO.CommentDTO;
+import com.app.codingTogether.model.DTO.ReplyDTO;
 import com.app.codingTogether.repository.CommentRepository;
 
 @Service
@@ -54,7 +55,7 @@ public class CommentService {
 	}
 
 
-	public CommentDTO saveNestedPost(User u, Comment c, String content) {
+	public ReplyDTO saveNestedPost(User u, Comment c, String content) {
 		Reply reply = new Reply();
 		reply.setContent(content);
 		reply.setCreatedAt(LocalDateTime.now());
@@ -64,7 +65,8 @@ public class CommentService {
 		reply.setImage(u.getProfileImage());
 		List<Reply> commentReplies = c.getReplies();
 		commentReplies.add(reply);		
-		return DataToDTO.commentToDTO(commentRepo.save(c));
+		commentRepo.save(c);
+		return DataToDTO.replyToDTO(reply);
 	}
 
 	public Like searchLike(User u, Comment c) {
