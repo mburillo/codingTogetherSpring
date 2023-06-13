@@ -11,13 +11,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.app.codingTogether.controller.image.UserImageManager;
-import com.app.codingTogether.controller.password.PasswordEncoder;
 import com.app.codingTogether.model.Comment;
-import com.app.codingTogether.model.FavoriteLanguage;
-import com.app.codingTogether.model.Reply;
 import com.app.codingTogether.model.User;
 import com.app.codingTogether.model.DTO.CommentDTO;
+import com.app.codingTogether.model.DTO.ReplyDTO;
 import com.app.codingTogether.service.CommentService;
 import com.app.codingTogether.service.UserService;
 
@@ -51,7 +48,7 @@ public class CommentController {
 	}
 
 	@PostMapping("/nestPost")
-	public ResponseEntity<CommentDTO> saveNestedPost(@RequestParam("idPost") Long idPost,
+	public ResponseEntity<ReplyDTO> saveNestedPost(@RequestParam("idPost") Long idPost,
 			@RequestParam("idComentador") Long idComentador, @RequestParam("comentario") String content) {
 		User u = userService.getById(idComentador);
 		Comment c = commentService.getById(idPost);

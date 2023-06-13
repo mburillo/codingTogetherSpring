@@ -1,9 +1,7 @@
 package com.app.codingTogether.controller;
 
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,14 +25,7 @@ public class ChatController {
 	@Autowired
 	ChatMessageService messageService;
 
-	@MessageMapping("/chat")
-	@SendTo("/topic/messages")
-	public ChatMessageDTO sendMessage(@Payload ReceivedChatMessage chatMessage) {
-		User u = userService.getById(chatMessage.getId());
-		ChatMessageDTO storedMessage = messageService.saveChatMessage(u, chatMessage.getContent());
-		return storedMessage;
-	}
-
+	
 	@GetMapping("/getChatMessages")
 	public ResponseEntity<List<ChatMessageDTO>> getLatestMessages() {
 		List<ChatMessageDTO> messages = messageService.getLatestMessages();
@@ -42,4 +33,12 @@ public class ChatController {
 		return ResponseEntity.ok(messages);
 	}
 
+	
+	@MessageMapping("/chat")
+	@SendTo("/topic/messages")
+	public ChatMessageDTO sendMessage(@Payload ReceivedChatMessage chatMessage) {
+		User u = userService.getById(chatMessage.getId());
+		ChatMessageDTO storedMessage = messageService.saveChatMessage(u, chatMessage.getContent());
+		return storedMessage;
+	}
 }

@@ -6,7 +6,6 @@ import java.util.Set;
 import java.util.HashSet;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.CascadeType;
@@ -31,7 +30,7 @@ public class Comment {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
 	@JoinColumn(name = "user_id", nullable = false)
 	private User user;
 
@@ -42,7 +41,7 @@ public class Comment {
 	private List<Like> likes;
 
 	@ManyToMany(mappedBy = "repostedComments", fetch = FetchType.EAGER)
-	private Set<User> repostedByUsers = new HashSet<>();;
+	private Set<User> repostedByUsers = new HashSet<>();
 
 	@OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private List<Reply> replies;
