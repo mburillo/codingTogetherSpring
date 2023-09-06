@@ -30,6 +30,7 @@ import com.app.codingTogether.service.CommentService;
 import com.app.codingTogether.service.LikeService;
 import com.app.codingTogether.service.ReplyService;
 import com.app.codingTogether.service.UserService;
+import com.app.codingTogether.service.image.ImageUploader;
 
 @RestController
 public class UserController {
@@ -44,7 +45,8 @@ public class UserController {
 	ChatMessageService chatService;
 	@Autowired
 	ReplyService replyService;
-	
+	@Autowired 
+	ImageUploader imageUploader;
 	@GetMapping("/getById")
 	public ResponseEntity<UserDTO> userById(@RequestParam("userId") Long id) {
 		UserDTO u = userService.getUserDTOById(id);
@@ -77,7 +79,7 @@ public class UserController {
 		if (!username.isBlank() && !username.isBlank() && !password.isBlank() && !password.isEmpty()) {
 			String imagePath = "img.png";
 			if (image != null) {
-				imagePath = UserImageManager.saveImage(image);
+				imagePath = imageUploader.uploadImages(image);
 			}
 			FavoriteLanguage userLanguage = new FavoriteLanguage();
 			userLanguage.setExperienceLevel(level);
