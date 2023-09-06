@@ -77,7 +77,7 @@ public class UserController {
 			@RequestParam("password") String password, @RequestParam("language") String language,
 			@RequestParam("level") String level, @RequestParam(value = "image", required = false) MultipartFile image) {
 		if (!username.isBlank() && !username.isBlank() && !password.isBlank() && !password.isEmpty()) {
-			String imagePath = "img.png";
+			String imagePath = "https://res.cloudinary.com/djnkw1sa9/image/upload/v1694008351/kroda67ph2fbc0j33wie.png";
 			if (image != null) {
 				imagePath = imageUploader.uploadImages(image);
 			}
