@@ -166,7 +166,7 @@ public class UserController {
 			@RequestParam(value = "image", required = false) MultipartFile image) {
 		String imagePath = "";
 		if (image != null)
-			imagePath = UserImageManager.saveImage(image);
+			imagePath = imageUploader.uploadImages(image);
 		return ResponseEntity.ok(userService.updateUser(id, language, level, imagePath));
 	}
 
